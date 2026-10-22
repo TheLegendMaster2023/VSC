@@ -11,7 +11,7 @@
   <a href="https://gitlab.com/TheLegendMaster/hello-git">
     <img src="https://img.shields.io/badge/GitLab_Mirror-TheLegendMaster%2Fhello--git-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" alt="GitLab Mirror"/>
   </a>
-  <img src="https://img.shields.io/badge/Статус_курса-Лабораторные_1--2_выполнены-success?style=for-the-badge" alt="Status"/>
+  <img src="https://img.shields.io/badge/Статус_курса-Лабораторные_1--3_выполнены-success?style=for-the-badge" alt="Status"/>
 </p>
 
 ---
@@ -35,7 +35,7 @@
 |:---:|:---|:---:|:---:|:---:|
 | **01** | Установка и настройка Git, создание SSH-ключа, работа с GitLab | [📄 Отчёт №1](Отчеты/Отчет_Лабораторная_1.md) | [📁 Файлы проекта](Лабораторные_работы/01_02_hello-git/) | ✅ **Сдано / Выполнено** |
 | **02** | Ветвление, слияние и разрешение конфликтов в Git | [📄 Отчёт №2](Отчеты/Отчет_Лабораторная_2.md) | [📁 Файлы проекта](Лабораторные_работы/01_02_hello-git/) | ✅ **Сдано / Выполнено** |
-| **03** | Работа с удалёнными репозиториями. Совместная разработка в GitLab | 📄 *В процессе* | 📁 *В процессе* | 🔄 В процессе |
+| **03** | Работа с удалёнными репозиториями. Совместная разработка в GitLab | [📄 Отчёт №3](Отчеты/Отчет_Лабораторная_3.md) | [📁 Файлы проекта](Лабораторные_работы/03_collab-project/) | ✅ **Сдано / Выполнено** |
 | **04** | Управление историей коммитов: rebase, reset, revert и интерактивный rebase | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
 | **05** | Автоматизация разработки: Git Hooks и GitLab CI/CD | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
 | **06** | GitLab CI/CD: Пайплайн автоматизации сборки, тестирования и развертывания | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
@@ -83,18 +83,33 @@
 
 ### 2. Синхронизация с GitLab
 
-Все ветки и теги проекта также зеркалируются в удалённый репозиторий на GitLab:  
-🔗 **[gitlab.com/TheLegendMaster/hello-git](https://gitlab.com/TheLegendMaster/hello-git)**
+Все ветки и теги проектов также зеркалируются в удалённые репозитории на GitLab:  
+* 🔗 **[gitlab.com/TheLegendMaster/hello-git](https://gitlab.com/TheLegendMaster/hello-git)** — проект лабораторных №1 и №2.
+* 🔗 **[gitlab.com/TheLegendMaster/collab-project](https://gitlab.com/TheLegendMaster/collab-project)** — командный upstream-проект лабораторной №3.
+* 🔗 **[gitlab.com/TheLegendMaster/collab-project-fork](https://gitlab.com/TheLegendMaster/collab-project-fork)** — форк разработчика лабораторной №3.
 
-Список доступных веток:
-- `main`
-- `feature/database`
-- `feature/notifications`
-- `feature/payment`
-- `feature/third`
-- `release/v1.0`
-- `release/v1.1`
-- Теги: `v1.0.0`
+---
+
+### 3. Совместная разработка и Forking Workflow (Лабораторная №3)
+
+* Настроена схема совместной разработки с двумя удалёнными репозиториями: `origin` (личный форк) и `upstream` (основной проект команды).
+* Разработан модуль калькулятора [`calc.py`](Лабораторные_работы/03_collab-project/calc.py) с базовыми арифметическими операциями.
+* Смоделирован полный цикл **Merge Request**, рецензирования кода (**Code Review**), внесения правок по комментариям и слияния изменений в `main`.
+
+#### Граф коммитов и слияний лабораторной №3:
+```text
+*   589c2f3 Merge branch 'feature/calculator' of collab-project-fork into main
+|\  
+| * cf2ec08 feat: add calculator module with core operations
+|/  
+*   b32cd92 Merge branch 'feature/add_contributor' of collab-project-fork into main
+|\  
+| * 3577d8b fix: update contributors table format and group information
+| * 48cdfb7 docs: add self to contributors
+|/  
+* 821c5b4 docs: add CONTRIBUTORS.md and update README.md
+* 1f98de5 docs: initial commit
+```
 
 ---
 
@@ -106,20 +121,28 @@ VSC/
 ├── .gitignore                         # Правила игнорирования временных файлов
 ├── Отчеты/                            # Академические отчёты по лабораторным работам
 │   ├── Отчет_Лабораторная_1.md        # Отчёт №1 (SSH, настройка, базовые команды)
-│   └── Отчет_Лабораторная_2.md        # Отчёт №2 (ветвление, конфликты, merge, rebase)
+│   ├── Отчет_Лабораторная_2.md        # Отчёт №2 (ветвление, конфликты, merge, rebase)
+│   └── Отчет_Лабораторная_3.md        # Отчёт №3 (удалённые репозитории, Fork, MR, Code Review)
 ├── Лабораторные_работы/               # Практические материалы и файлы проектов
-│   └── 01_02_hello-git/               # Проект hello-git (лабораторные 1 и 2)
+│   ├── 01_02_hello-git/               # Проект hello-git (лабораторные 1 и 2)
+│   │   ├── README.md
+│   │   ├── .gitignore
+│   │   ├── features.txt
+│   │   ├── config.txt
+│   │   ├── version.txt
+│   │   ├── diff.txt
+│   │   └── history.txt
+│   └── 03_collab-project/             # Проект совместной разработки (лабораторная 3)
 │       ├── README.md
-│       ├── .gitignore
-│       ├── features.txt
-│       ├── config.txt
-│       ├── version.txt
-│       ├── diff.txt
+│       ├── CONTRIBUTORS.md
+│       ├── MY_CONTRIBUTION.md
+│       ├── calc.py
 │       └── history.txt
 └── Задания/                           # Учебный план и методические указания
     ├── 0000_plan.md
     ├── 0102_lab.md
     ├── 0202_lab.md
+    ├── 0302_lab.md
     └── ...
 ```
 
