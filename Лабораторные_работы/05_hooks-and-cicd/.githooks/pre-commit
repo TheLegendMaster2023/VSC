@@ -1,0 +1,35 @@
+#!/bin/bash
+echo "🔍 [pre-commit] Запуск автоматических проверок кода..."
+
+# 1. Проверка синтаксиса Python-файлов
+STAGED_PY=$(git diff --cached --name-only --diff-filter=ACM | grep '\.py$')
+if [ -n "$STAGED_PY" ]; then
+    for FILE in $STAGED_PY; do
+        if [ -f "$FILE" ]; then
+            python -m py_compile "$FILE" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                echo "❌ [pre-commit] Синтаксическая ошибка в файле: $FILE"
+                exit 1
+            fi
+        fi
+    done
+    echo "✅ [pre-commit] Синтаксис Python-файлов корректен."
+fi
+
+# 2. Проверка на утечку секретов и паролей
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
+PATTERNS=("password\s*=" "secret\s*=" "api_key\s*=" "token\s*=")
+for FILE in $STAGED_FILES; do
+    if [ -f "$FILE" ] && [ "$FILE" != "secret.txt" ]; then
+        for P in "${PATTERNS[@]}"; do
+            if grep -E -i "$P" "$FILE" > /dev/null 2>&1; then
+                echo "❌ [pre-commit] Обнаружен потенциальный секрет в $FILE (паттерн: $P)"
+                echo "💡 Используйте переменные окружения вместо хардкода секретов!"
+                exit 1
+            fi
+        done
+    fi
+done
+
+echo "✅ [pre-commit] Проверка безопасности и синтаксиса пройдена."
+exit 0

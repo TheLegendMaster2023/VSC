@@ -1,0 +1,6 @@
+#!/bin/bash
+echo "🚀 [pre-push] Проверка перед отправкой на сервер..."
+if [ ! -f ".gitlab-ci.yml" ]; then
+    echo "⚠️ [pre-push] Внимание: отсутствует файл .gitlab-ci.yml"
+fi
+exit 0

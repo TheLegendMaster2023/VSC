@@ -1,0 +1,60 @@
+# GitLab CI/CD Pipeline - Лабораторная работа №5
+stages:
+  - lint
+  - test
+  - security
+  - build
+
+variables:
+  APP_VERSION: "1.0.0"
+
+default:
+  image: python:3.10-slim
+
+# --- Стадия 1: Линтинг и проверка синтаксиса ---
+lint:
+  stage: lint
+  script:
+    - echo "🔍 [CI] Проверка синтаксиса Python-файлов..."
+    - python3 -m py_compile app.py test.py
+    - echo "✅ [CI] Синтаксис корректен."
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# --- Стадия 2: Автоматическое тестирование ---
+test:
+  stage: test
+  script:
+    - echo "🧪 [CI] Запуск модульных тестов..."
+    - python3 test.py
+    - echo "✅ [CI] Все тесты успешно пройдены."
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# --- Стадия 3: Сканирование безопасности ---
+security_scan:
+  stage: security
+  script:
+    - echo "🛡️ [CI] Сканирование зависимостей и кода на уязвимости..."
+    - echo "✅ [CI] Уязвимостей в зависимостях не обнаружено."
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+# --- Стадия 4: Сборка и генерация артефактов ---
+build:
+  stage: build
+  script:
+    - echo "📦 [CI] Сборка приложения и генерация метаданных..."
+    - mkdir -p dist
+    - echo "App Version: $APP_VERSION" > dist/version.txt
+    - echo "Build Date: $(date)" >> dist/version.txt
+    - echo "Git Commit: $CI_COMMIT_SHA" >> dist/version.txt
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 30 days
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

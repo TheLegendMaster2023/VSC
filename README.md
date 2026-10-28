@@ -11,7 +11,7 @@
   <a href="https://gitlab.com/TheLegendMaster/hello-git">
     <img src="https://img.shields.io/badge/GitLab_Mirror-TheLegendMaster%2Fhello--git-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white" alt="GitLab Mirror"/>
   </a>
-  <img src="https://img.shields.io/badge/Статус_курса-Лабораторные_1--3_выполнены-success?style=for-the-badge" alt="Status"/>
+  <img src="https://img.shields.io/badge/Статус_курса-Лабораторные_1--5_выполнены-success?style=for-the-badge" alt="Status"/>
 </p>
 
 ---
@@ -36,8 +36,8 @@
 | **01** | Установка и настройка Git, создание SSH-ключа, работа с GitLab | [📄 Отчёт №1](Отчеты/Отчет_Лабораторная_1.md) | [📁 Файлы проекта](Лабораторные_работы/01_02_hello-git/) | ✅ **Сдано / Выполнено** |
 | **02** | Ветвление, слияние и разрешение конфликтов в Git | [📄 Отчёт №2](Отчеты/Отчет_Лабораторная_2.md) | [📁 Файлы проекта](Лабораторные_работы/01_02_hello-git/) | ✅ **Сдано / Выполнено** |
 | **03** | Работа с удалёнными репозиториями. Совместная разработка в GitLab | [📄 Отчёт №3](Отчеты/Отчет_Лабораторная_3.md) | [📁 Файлы проекта](Лабораторные_работы/03_collab-project/) | ✅ **Сдано / Выполнено** |
-| **04** | Управление историей коммитов: rebase, reset, revert и интерактивный rebase | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
-| **05** | Автоматизация разработки: Git Hooks и GitLab CI/CD | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
+| **04** | Управление историей коммитов: rebase, reset, revert и интерактивный rebase | [📄 Отчёт №4](Отчеты/Отчет_Лабораторная_4.md) | [📁 Файлы проекта](Лабораторные_работы/04_history-management/) | ✅ **Сдано / Выполнено** |
+| **05** | Автоматизация разработки: Git Hooks и GitLab CI/CD | [📄 Отчёт №5](Отчеты/Отчет_Лабораторная_5.md) | [📁 Файлы проекта](Лабораторные_работы/05_hooks-and-cicd/) | ✅ **Сдано / Выполнено** |
 | **06** | GitLab CI/CD: Пайплайн автоматизации сборки, тестирования и развертывания | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
 | **07** | Окружения, Review Apps и управление развертыванием в GitLab | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
 | **08** | Git Submodules, Git LFS и Container Registry в GitLab | 📄 *В процессе* | 📁 *В процессе* | ⏳ Запланировано |
@@ -113,6 +113,42 @@
 
 ---
 
+### 4. Управление историей коммитов (Лабораторная №4)
+
+* Исследованы режимы отмены: `git reset` (`--soft`, `--mixed`, `--hard`), `git revert`, `git restore` и `git commit --amend`.
+* Отработано интерактивное перебазирование (`git rebase -i`): склеивание коммитов (`squash`), изменение сообщений (`reword`) и исключение секретов.
+* Выполнена очистка репозитория от ошибочно добавленного файла с паролем `secret.txt` через `git filter-branch`.
+* Отработана принудительная безопасная отправка истории с флагом `--force-with-lease`.
+
+#### Граф коммитов лабораторной №4:
+```text
+* 5d12c19 feat(notifications): add advanced notification service
+* 81efd0b docs: update payment gateway documentation
+* fa6152c feat: add database models
+* ed5ea02 docs: update user authentication specifications
+| * 486f4c7 fix: accidentally added database password
+| * 67dc5fd feat(notifications): add advanced notification service
+| * 2fc2d15 feat: add payment gateway integration
+|/  
+* 74fcd3a feat: initial structure for clean history
+* eec851a feat: add line 5 with extra details
+* af1dfed feat: add line 4
+* d9a955c feat: add lines 1 to 3 combined with squash
+```
+
+---
+
+### 5. Автоматизация разработки: Git Hooks и GitLab CI/CD (Лабораторная №5)
+
+* Разработан комплекс клиентских перехватчиков (`.githooks/`):
+  * `pre-commit`: предотвращение коммитов с синтаксическими ошибками Python и утечками паролей/токенов.
+  * `commit-msg`: строгая валидация формата сообщений по спецификации Conventional Commits.
+  * `post-commit`: автоматическое ведение журнала фиксаций в `commit.log`.
+* Сконфигурирован многостадийный пайплайн `.gitlab-ci.yml` (`lint`, `test`, `security`, `build`) с сохранением артефактов `dist/`.
+* Добавлен модуль модульного тестирования `test.py` (`unittest`) и бейдж статуса пайплайна.
+
+---
+
 ## 📂 Структура репозитория
 
 ```text
@@ -122,27 +158,43 @@ VSC/
 ├── Отчеты/                            # Академические отчёты по лабораторным работам
 │   ├── Отчет_Лабораторная_1.md        # Отчёт №1 (SSH, настройка, базовые команды)
 │   ├── Отчет_Лабораторная_2.md        # Отчёт №2 (ветвление, конфликты, merge, rebase)
-│   └── Отчет_Лабораторная_3.md        # Отчёт №3 (удалённые репозитории, Fork, MR, Code Review)
+│   ├── Отчет_Лабораторная_3.md        # Отчёт №3 (удалённые репозитории, Fork, MR, Code Review)
+│   ├── Отчет_Лабораторная_4.md        # Отчёт №4 (rebase, reset, revert, squash, force-with-lease)
+│   └── Отчет_Лабораторная_5.md        # Отчёт №5 (Git Hooks, .gitlab-ci.yml, автоматизация)
 ├── Лабораторные_работы/               # Практические материалы и файлы проектов
 │   ├── 01_02_hello-git/               # Проект hello-git (лабораторные 1 и 2)
 │   │   ├── README.md
-│   │   ├── .gitignore
 │   │   ├── features.txt
 │   │   ├── config.txt
 │   │   ├── version.txt
 │   │   ├── diff.txt
 │   │   └── history.txt
-│   └── 03_collab-project/             # Проект совместной разработки (лабораторная 3)
-│       ├── README.md
-│       ├── CONTRIBUTORS.md
-│       ├── MY_CONTRIBUTION.md
-│       ├── calc.py
+│   ├── 03_collab-project/             # Проект совместной разработки (лабораторная 3)
+│   │   ├── README.md
+│   │   ├── CONTRIBUTORS.md
+│   │   ├── MY_CONTRIBUTION.md
+│   │   ├── calc.py
+│   │   └── history.txt
+│   ├── 04_history-management/         # Проект управления историей (лабораторная 4)
+│   │   ├── module1.txt ... module5.txt
+│   │   ├── app.py, data.txt
+│   │   ├── file_rebase.txt
+│   │   └── history.txt
+│   └── 05_hooks-and-cicd/             # Проект автоматизации и CI/CD (лабораторная 5)
+│       ├── .githooks/ (pre-commit, commit-msg, post-commit, pre-push)
+│       ├── scripts/install-hooks.sh
+│       ├── .gitlab-ci.yml
+│       ├── app.py, test.py
+│       ├── requirements.txt
+│       ├── commit.log
 │       └── history.txt
 └── Задания/                           # Учебный план и методические указания
     ├── 0000_plan.md
     ├── 0102_lab.md
     ├── 0202_lab.md
     ├── 0302_lab.md
+    ├── 0402_lab.md
+    ├── 0502_lab.md
     └── ...
 ```
 

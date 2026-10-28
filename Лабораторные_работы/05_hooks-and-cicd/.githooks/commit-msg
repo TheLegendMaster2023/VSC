@@ -1,0 +1,16 @@
+#!/bin/bash
+COMMIT_MSG_FILE=$1
+MSG=$(cat "$COMMIT_MSG_FILE" | head -n 1)
+
+echo "🔍 [commit-msg] Проверка формата сообщения: '$MSG'"
+PATTERN="^(feat|fix|docs|style|refactor|perf|test|chore|ci|build)(\([a-z0-9\-]+\))?: .{1,100}$"
+
+if ! echo "$MSG" | grep -E "$PATTERN" > /dev/null 2>&1; then
+    echo "❌ [commit-msg] Ошибка: сообщение коммита не соответствует стандарту Conventional Commits!"
+    echo "Допустимые типы: feat, fix, docs, style, refactor, perf, test, chore, ci, build"
+    echo "Пример: feat(auth): add login functionality"
+    exit 1
+fi
+
+echo "✅ [commit-msg] Формат сообщения валиден."
+exit 0
